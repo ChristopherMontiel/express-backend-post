@@ -13,17 +13,23 @@ router.get('/', async (req, response) => {
 });
 
 router.post('/', async (req, response) => {
-  // falta validar campos
+  // validar campos
+  let idPost = req.body.id;
   let namePost = req.body.name;
   let descriptionPost = req.body.description;
-
+  if (namePost === null ){
+    response.status(400).json('Falta nombre del post');
+  }
+  if (descriptionPost === null ){
+    response.status(400).json('Falta nombre descripción del post');
+  }
   query =
-    'INSERT INTO POST (name, description) ' +
-    'VALUES($1, $2)';
+    'INSERT INTO POST (id, name, description) ' +
+    'VALUES($1, $2, $3)';
 
   config.client.query(
     query,
-    [namePost,descriptionPost],
+    [idPost, namePost,descriptionPost],
     function (error, result) {
       if (error) {
         message =
